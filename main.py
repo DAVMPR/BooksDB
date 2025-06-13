@@ -11,7 +11,8 @@ def mostrar_menu():
     print("1. Ver todos los libros")
     print("2. Añadir un libro")
     print("3. Actualizar estado o propiedad de un libro")
-    print("4. Salir")
+    print("4. Ver detalles de un libro")
+    print("5. Salir")
 
 def mostrar_libros(libros):
     if not libros:
@@ -27,7 +28,8 @@ def pedir_datos_libro():
     genero_secundario = input("Género secundario (opcional): ") or None
     estado = input("Estado (want_to_read / reading / readed): ")
     propiedad = input("Propiedad (no_lo_tengo / fisico / digital): ")
-    return Book(titulo, autor, genero_principal, genero_secundario, estado, propiedad)
+    descripcion = input("Descripción (opcional): ")
+    return Book(titulo, autor, genero_principal, genero_secundario, estado, propiedad, descripcion)
 
 def actualizar_libro(libros):
     mostrar_libros(libros)
@@ -38,9 +40,33 @@ def actualizar_libro(libros):
             print(f"Editando: {libro}")
             nuevo_estado = input(f"Nuevo estado (actual: {libro.estado}) [Enter para mantener]: ") or libro.estado
             nueva_propiedad = input(f"Nueva propiedad (actual: {libro.propiedad}) [Enter para mantener]: ") or libro.propiedad
+            editar_descripcion = input(f"Editar o añadir descripción (actual: {libro.descripcion or 'No disponible'}) [Enter para mantener]: ") or libro.descripcion
+            libro.descripcion = editar_descripcion
             libro.estado = nuevo_estado
             libro.propiedad = nueva_propiedad
             print("✔ Libro actualizado correctamente.")
+        else:
+            print("❌ Índice fuera de rango.")
+    except ValueError:
+        print("❌ Entrada inválida.")
+
+def ver_detalle_libro(libros: list[Book]):
+    mostrar_libros(libros)
+    if not libros:
+        return
+
+    try:
+        indice = int(input("\nSelecciona el número del libro para ver detalles: ")) - 1
+        if 0 <= indice < len(libros):
+            libro = libros[indice]
+            print("\n📖 Información detallada del libro:")
+            print(f"📘 Título: {libro.titulo}")
+            print(f"✍️  Autor: {libro.autor}")
+            print(f"📝 Descripción: {libro.descripcion or 'No disponible'}")
+            print(f"🏷️  Género principal: {libro.genero_principal}")
+            print(f"🏷️  Género secundario: {libro.genero_secundario or 'Ninguno'}")
+            print(f"📚 Estado de lectura: {libro.estado}")
+            print(f"📦 Propiedad: {libro.propiedad}")
         else:
             print("❌ Índice fuera de rango.")
     except ValueError:
@@ -75,6 +101,11 @@ def main():
             input("\nPresiona Enter para continuar...")
 
         elif opcion == "4":
+            limpiar_pantalla()
+            ver_detalle_libro(libros)
+            input("\nPresiona Enter para continuar...")
+
+        elif opcion == "5":
             print("👋 ¡Hasta luego!")
             break
 

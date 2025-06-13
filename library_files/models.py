@@ -6,13 +6,14 @@ PROPIEDADES_VALIDAS = {"no_lo_tengo", "fisico", "digital"}
 class Book:
     def __init__(self, titulo: str, autor: str, genero_principal: str,
                  genero_secundario: Optional[str] = None,
-                 estado: str = "want_to_read", propiedad: str = "no_lo_tengo"):
+                 estado: str = "want_to_read", propiedad: str = "no_lo_tengo", descripcion=None):
         self.titulo = titulo
         self.autor = autor
         self.genero_principal = genero_principal
         self.genero_secundario = genero_secundario
         self.estado = estado  # Opciones: "want_to_read", "reading", "readed"
         self.propiedad = propiedad  # Opciones: "no_lo_tengo", "fisico", "digital"
+        self.descripcion = descripcion
 
     def __repr__(self):
         return f"<Book '{self.titulo}' by {self.autor}, estado={self.estado}, propiedad={self.propiedad}>"
@@ -28,7 +29,8 @@ class Book:
             "genero_principal": self.genero_principal,
             "genero_secundario": self.genero_secundario,
             "estado": self.estado,
-            "propiedad": self.propiedad
+            "propiedad": self.propiedad,
+            "descripcion": self.descripcion if self.descripcion else ""
         }
 
     @classmethod
@@ -40,5 +42,6 @@ class Book:
             genero_principal=data.get("genero_principal"),
             genero_secundario=data.get("genero_secundario"),
             estado=data.get("estado", "want_to_read"),
-            propiedad=data.get("propiedad", "no_lo_tengo")
+            propiedad=data.get("propiedad", "no_lo_tengo"),
+            descripcion=data.get("descripcion")
         )
